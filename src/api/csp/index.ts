@@ -2,6 +2,9 @@ import { API } from '../api';
 import { Election, IElection, IElectionCreated, IElectionDeleted } from './election';
 import { User, IUser, IUserUpdate, IUserDeleted } from './user';
 
+/**
+ * CSP API, abstracts the CSP endpoints
+ */
 export abstract class CspAPI extends API {
   /**
    * Cannot be constructed.

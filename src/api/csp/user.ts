@@ -37,6 +37,16 @@ export abstract class User extends API {
     super();
   }
 
+  /**
+   * Adds a new user to an existing election
+   *
+   * @param {string} url CSP admin endpoint URL
+   * @param {string} authToken Token to authenticate the request
+   * @param {string} electionId
+   * @param {IUser} data
+   *
+   * @returns {Promise<IUser>}
+   */
   public static create(url: string, authToken: string, electionId: string, data: IUser): Promise<IUser> {
     return axios
       .post(`${url + CspUserMethods.CREATE.replace('{electionId}', electionId)}`, data, {
@@ -46,6 +56,16 @@ export abstract class User extends API {
       .catch(this.isApiError);
   }
 
+  /**
+   * Get a user belonging to an election
+   *
+   * @param {string} url CSP admin endpoint URL
+   * @param {string} authToken Token to authenticate the request
+   * @param {string} electionId
+   * @param {string} id
+   *
+   * @returns {Promise<IUser>}
+   */
   public static get(url: string, authToken: string, electionId: string, id: string): Promise<IUser> {
     return axios
       .get(`${url + CspUserMethods.GET.replace('{electionId}', electionId).replace('{id}', id)}`, {
@@ -55,6 +75,17 @@ export abstract class User extends API {
       .catch(this.isApiError);
   }
 
+  /**
+   * Update a user belonging to an election
+   *
+   * @param {string} url CSP admin endpoint URL
+   * @param {string} authToken Token to authenticate the request
+   * @param {string} electionId
+   * @param {string} id
+   * @param {IUser} data
+   *
+   * @returns {Promise<IUser>}
+   */
   public static update(
     url: string,
     authToken: string,
@@ -70,6 +101,16 @@ export abstract class User extends API {
       .catch(this.isApiError);
   }
 
+  /**
+   * Delete a user belonging to an election
+   *
+   * @param {string} url CSP admin endpoint URL
+   * @param {string} authToken Token to authenticate the request
+   * @param {string} electionId
+   * @param {string} id
+   *
+   * @returns {Promise<IUserDeleted>}
+   */
   public static delete(url: string, authToken: string, electionId: string, id: string): Promise<IUserDeleted> {
     return axios
       .delete(`${url + CspUserMethods.DELETE.replace('{electionId}', electionId).replace('{id}', id)}`, {
@@ -79,6 +120,15 @@ export abstract class User extends API {
       .catch(this.isApiError);
   }
 
+  /**
+   * List all users belonging to an election
+   *
+   * @param {string} url CSP admin endpoint URL
+   * @param {string} authToken Token to authenticate the request
+   * @param {string} electionId
+   *
+   * @returns {Promise<IUser[]>}
+   */
   public static list(url: string, authToken: string, electionId: string): Promise<IUser[]> {
     return axios
       .get(`${url + CspUserMethods.LIST.replace('{electionId}', electionId)}`, {
@@ -88,6 +138,16 @@ export abstract class User extends API {
       .catch(this.isApiError);
   }
 
+  /**
+   * Search users matching a query
+   *
+   * @param {string} url CSP admin endpoint URL
+   * @param {string} authToken Token to authenticate the request
+   * @param {string} electionId
+   * @param {IUser} query
+   *
+   * @returns {Promise<IUser[]>}
+   */
   public static search(url: string, authToken: string, electionId: string, query: IUser): Promise<IUser[]> {
     return axios
       .post(`${url + CspUserMethods.SEARCH.replace('{electionId}', electionId)}?q=${query}`, {

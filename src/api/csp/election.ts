@@ -40,8 +40,9 @@ export abstract class Election extends API {
 
   /**
    * Create a new election
+   *
    * @param {string} url CSP admin endpoint URL
-   * @param {any} election Election object
+   * @param {IElection } data Election object
    *
    * @returns {Promise<IElectionCreated>} Election object
    */
@@ -52,6 +53,14 @@ export abstract class Election extends API {
       .catch(this.isApiError);
   }
 
+  /**
+   * Get an election
+   *
+   * @param {string} url CSP admin endpoint URL
+   * @param {string} id Election ID
+   *
+   * @returns {Promise<IElection>}
+   */
   public static get(url: string, id: string): Promise<IElection> {
     return axios
       .get(`${url + CspElectionMethods.GET.replace('{id}', id)}`)
@@ -59,6 +68,15 @@ export abstract class Election extends API {
       .catch(this.isApiError);
   }
 
+  /**
+   * Delete an election
+   *
+   * @param {string} url CSP admin endpoint URL
+   * @param {string} authToken CSP admin auth token
+   * @param {string} id Election ID
+   *
+   * @returns {Promise<IElectionDeleted>}
+   */
   public static delete(url: string, authToken: string, id: string): Promise<IElectionDeleted> {
     return axios
       .delete(`${url + CspElectionMethods.DELETE.replace('{id}', id)}`, {
@@ -68,6 +86,13 @@ export abstract class Election extends API {
       .catch(this.isApiError);
   }
 
+  /**
+   * List all elections
+   *
+   * @param {string} url CSP admin endpoint URL
+   *
+   * @returns {Promise<string[]>}
+   */
   public static list(url: string): Promise<string[]> {
     return axios
       .get(`${url + CspElectionMethods.LIST}`)
