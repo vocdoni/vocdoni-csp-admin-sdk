@@ -1,6 +1,6 @@
 import { API } from '../api';
 import { Election, IElection, IElectionCreated, IElectionDeleted } from './election';
-import { User, IUser, IUserUpdate, IUserDeleted } from './user';
+import { User, IUser, IUserUpdate, IUserDeleted, IUserSearch } from './user';
 
 /**
  * CSP API, abstracts the CSP endpoints
@@ -55,7 +55,7 @@ export abstract class CspAPI extends API {
     return User.list(url, authToken, electionId);
   }
 
-  public static userSearch(url: string, authToken: string, electionId: string, query: IUser): Promise<IUser[]> {
+  public static userSearch(url: string, authToken: string, electionId: string, query: IUserSearch): Promise<IUser[]> {
     return User.search(url, authToken, electionId, query);
   }
 }

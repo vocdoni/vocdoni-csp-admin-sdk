@@ -7,7 +7,7 @@ enum CspUserMethods {
   UPDATE = '/elections/{electionId}/users/{id}',
   DELETE = '/elections/{electionId}/users/{id}',
   LIST = '/elections/{electionId}/users',
-  SEARCH = '/elections/{electionId}/users',
+  SEARCH = '/elections/{electionId}/users/search',
 }
 
 export interface IUser {
@@ -18,6 +18,16 @@ export interface IUser {
   mode: string;
   data: string;
   consumed: boolean;
+}
+
+export interface IUserSearch {
+  userId?: string;
+  electionId?: string;
+  handler?: string;
+  service?: string;
+  mode?: string;
+  data?: string;
+  consumed?: boolean;
 }
 
 export interface IUserUpdate {
@@ -144,13 +154,13 @@ export abstract class User extends API {
    * @param {string} url CSP admin endpoint URL
    * @param {string} authToken Token to authenticate the request
    * @param {string} electionId
-   * @param {IUser} query
+   * @param {IUserSearch} query
    *
    * @returns {Promise<IUser[]>}
    */
-  public static search(url: string, authToken: string, electionId: string, query: IUser): Promise<IUser[]> {
+  public static search(url: string, authToken: string, electionId: string, query: IUserSearch): Promise<IUser[]> {
     return axios
-      .post(`${url + CspUserMethods.SEARCH.replace('{electionId}', electionId)}?q=${query}`, {
+      .post(`${url + CspUserMethods.SEARCH.replace('{electionId}', electionId)}`, query, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => response.data)

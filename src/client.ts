@@ -1,6 +1,6 @@
 import { CspAPI } from './api/csp';
 import { IElection } from './api/csp/election';
-import { IUser, IUserUpdate } from './api/csp/user';
+import { IUser, IUserUpdate, IUserSearch } from './api/csp/user';
 
 /**
  * Optional VocdoniSDKClient arguments
@@ -174,10 +174,10 @@ export class VocdoniAdminSDKClient {
    *
    * @param {string} authToken Token to authenticate the request
    * @param electionId
-   * @param query The query to filter the users
+   * @param {IUserSearch} query The query to filter the users
    * @returns {Promise<IUser[]>}
    */
-  async cspUserSearch(authToken: string, electionId: string, query: IUser) {
+  async cspUserSearch(authToken: string, electionId: string, query: IUserSearch) {
     if (!this.csp_url) {
       throw new Error('Csp URL not set');
     }
