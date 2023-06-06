@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { API } from '../api';
+import axios from 'axios'
+import { API } from '../api'
 
 enum CspUserMethods {
   CREATE = '/elections/{electionId}/users',
@@ -11,32 +11,32 @@ enum CspUserMethods {
 }
 
 export interface IUser {
-  userId?: string;
-  electionId: string;
-  handler: string;
-  service: string;
-  mode: string;
-  data: string;
-  consumed: boolean;
+  userId?: string
+  electionId: string
+  handler: string
+  service: string
+  mode: string
+  data: string
+  consumed: boolean
 }
 
 export interface IUserSearch {
-  userId?: string;
-  electionId?: string;
-  handler?: string;
-  service?: string;
-  mode?: string;
-  data?: string;
-  consumed?: boolean;
+  userId?: string
+  electionId?: string
+  handler?: string
+  service?: string
+  mode?: string
+  data?: string
+  consumed?: boolean
 }
 
 export interface IUserUpdate {
-  consumed: boolean;
+  consumed: boolean
 }
 
 export interface IUserDeleted {
-  ok: boolean;
-  reason?: string;
+  ok: boolean
+  reason?: string
 }
 
 export abstract class User extends API {
@@ -44,7 +44,7 @@ export abstract class User extends API {
    * Cannot be constructed.
    */
   private constructor() {
-    super();
+    super()
   }
 
   /**
@@ -62,8 +62,8 @@ export abstract class User extends API {
       .post(`${url + CspUserMethods.CREATE.replace('{electionId}', electionId)}`, data, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
-      .then((response) => response.data)
-      .catch(this.isApiError);
+      .then((response) => response.data.data)
+      .catch(this.isApiError)
   }
 
   /**
@@ -81,8 +81,8 @@ export abstract class User extends API {
       .get(`${url + CspUserMethods.GET.replace('{electionId}', electionId).replace('{id}', id)}`, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
-      .then((response) => response.data)
-      .catch(this.isApiError);
+      .then((response) => response.data.data)
+      .catch(this.isApiError)
   }
 
   /**
@@ -107,8 +107,8 @@ export abstract class User extends API {
       .put(`${url + CspUserMethods.UPDATE.replace('{electionId}', electionId).replace('{id}', id)}`, data, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
-      .then((response) => response.data)
-      .catch(this.isApiError);
+      .then((response) => response.data.data)
+      .catch(this.isApiError)
   }
 
   /**
@@ -127,7 +127,7 @@ export abstract class User extends API {
         headers: { Authorization: `Bearer ${authToken}` },
       })
       .then((response) => response.data)
-      .catch(this.isApiError);
+      .catch(this.isApiError)
   }
 
   /**
@@ -144,8 +144,8 @@ export abstract class User extends API {
       .get(`${url + CspUserMethods.LIST.replace('{electionId}', electionId)}`, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
-      .then((response) => response.data)
-      .catch(this.isApiError);
+      .then((response) => response.data.data)
+      .catch(this.isApiError)
   }
 
   /**
@@ -163,7 +163,7 @@ export abstract class User extends API {
       .post(`${url + CspUserMethods.SEARCH.replace('{electionId}', electionId)}`, query, {
         headers: { Authorization: `Bearer ${authToken}` },
       })
-      .then((response) => response.data)
-      .catch(this.isApiError);
+      .then((response) => response.data.data)
+      .catch(this.isApiError)
   }
 }

@@ -1,6 +1,6 @@
-import { API } from '../api';
-import { Election, IElection, IElectionCreated, IElectionDeleted } from './election';
-import { User, IUser, IUserUpdate, IUserDeleted, IUserSearch } from './user';
+import { API } from '../api'
+import { Election, IElection, IElectionWithTokenResponse, IElectionDeleted, IElectionAuth } from './election'
+import { User, IUser, IUserUpdate, IUserDeleted, IUserSearch } from './user'
 
 /**
  * CSP API, abstracts the CSP endpoints
@@ -10,31 +10,39 @@ export abstract class CspAPI extends API {
    * Cannot be constructed.
    */
   private constructor() {
-    super();
+    super()
   }
 
-  public static electionCreate(url: string, data: IElection): Promise<IElectionCreated> {
-    return Election.create(url, data);
+  public static electionCreate(url: string, data: IElection): Promise<IElectionWithTokenResponse> {
+    return Election.create(url, data)
+  }
+
+  public static electionAuth(
+    url: string,
+    electionId: string,
+    data: IElectionAuth
+  ): Promise<IElectionWithTokenResponse> {
+    return Election.auth(url, electionId, data)
   }
 
   public static electionGet(url: string, electionId: string): Promise<IElection> {
-    return Election.get(url, electionId);
+    return Election.get(url, electionId)
   }
 
   public static electionDelete(url: string, authToken: string, electionId: string): Promise<IElectionDeleted> {
-    return Election.delete(url, authToken, electionId);
+    return Election.delete(url, authToken, electionId)
   }
 
   public static electionList(url: string): Promise<string[]> {
-    return Election.list(url);
+    return Election.list(url)
   }
 
   public static userCreate(url: string, authToken: string, electionId: string, data: IUser): Promise<IUser> {
-    return User.create(url, authToken, electionId, data);
+    return User.create(url, authToken, electionId, data)
   }
 
   public static userGet(url: string, authToken: string, electionId: string, id: string): Promise<IUser> {
-    return User.get(url, authToken, electionId, id);
+    return User.get(url, authToken, electionId, id)
   }
 
   public static userUpdate(
@@ -44,18 +52,18 @@ export abstract class CspAPI extends API {
     id: string,
     data: IUserUpdate
   ): Promise<IUser> {
-    return User.update(url, authToken, electionId, id, data);
+    return User.update(url, authToken, electionId, id, data)
   }
 
   public static userDelete(url: string, authToken: string, electionId: string, id: string): Promise<IUserDeleted> {
-    return User.delete(url, authToken, electionId, id);
+    return User.delete(url, authToken, electionId, id)
   }
 
   public static userList(url: string, authToken: string, electionId: string): Promise<IUser[]> {
-    return User.list(url, authToken, electionId);
+    return User.list(url, authToken, electionId)
   }
 
   public static userSearch(url: string, authToken: string, electionId: string, query: IUserSearch): Promise<IUser[]> {
-    return User.search(url, authToken, electionId, query);
+    return User.search(url, authToken, electionId, query)
   }
 }

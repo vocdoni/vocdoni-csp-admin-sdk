@@ -1,10 +1,10 @@
-import { AxiosError } from 'axios';
+import { AxiosError } from 'axios'
 
 export class ErrAPI extends Error {
-  public raw: AxiosError;
+  public raw: AxiosError
 
   constructor(message?: string, error?: AxiosError) {
-    super(message ? message : 'api error');
-    this.raw = error;
+    super(message ? message : 'api error')
+    this.raw = error
   }
 }
