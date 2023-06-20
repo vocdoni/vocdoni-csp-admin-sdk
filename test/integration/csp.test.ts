@@ -20,7 +20,7 @@ describe('CSP Admin Tests', () => {
   it('Should create a couple of elections correctly, getting, listing and finally deleting them', async () => {
     const client = new VocdoniAdminSDKClient({ cspUrl: cspUrl })
     const electionOne: IElection = {
-      electionId: generateRandomHex(64),
+      electionId: 'c5d2460186f7bb73137b620cffde1b3971a0c9023b480c851b700304000000' + generateRandomHex(2),
       handlers: [
         {
           handler: 'oauth',
@@ -38,7 +38,7 @@ describe('CSP Admin Tests', () => {
     }
 
     const electionTwo: IElection = {
-      electionId: generateRandomHex(64),
+      electionId: 'c5d2460186f7bb73137b620cffde1b3971a0c9023b480c851b700304000000' + generateRandomHex(2),
       handlers: [
         {
           handler: 'oauth',
@@ -82,7 +82,7 @@ describe('CSP Admin Tests', () => {
   it('Should be able to add, list, remove and other management users from an election', async () => {
     const client = new VocdoniAdminSDKClient({ cspUrl: cspUrl })
     const election: IElection = {
-      electionId: generateRandomHex(64),
+      electionId: 'c5d2460186f7bb73137b620cffde1b3971a0c9023b480c851b700304000000' + generateRandomHex(2),
       handlers: [
         {
           handler: 'oauth',
@@ -138,10 +138,10 @@ describe('CSP Admin Tests', () => {
     expect(listed).not.toContainEqual(createdUser)
   })
 
-  it('Should fail when providing wrong authToken', async () => {
+  it('Should fail when providing wrong adminToken', async () => {
     const client = new VocdoniAdminSDKClient({ cspUrl: cspUrl })
     const election: IElection = {
-      electionId: generateRandomHex(64),
+      electionId: 'c5d2460186f7bb73137b620cffde1b3971a0c9023b480c851b700304000000' + generateRandomHex(2),
       handlers: [
         {
           handler: 'oauth',
@@ -198,7 +198,7 @@ describe('CSP Admin Tests', () => {
     const client = new VocdoniAdminSDKClient({ cspUrl: cspUrl })
 
     const wallet: Wallet = ethers.Wallet.createRandom()
-    let electionId = generateRandomHex(64)
+    let electionId = 'c5d2460186f7bb73137b620cffde1b3971a0c9023b480c851b700304000000' + generateRandomHex(2)
 
     // Replace electionId chars from 12 to 52 with wallet address
     electionId = electionId.slice(0, 12) + wallet.address.slice(2).toLowerCase() + electionId.slice(52)

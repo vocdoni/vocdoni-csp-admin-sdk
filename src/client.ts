@@ -1,4 +1,4 @@
-import { Signer, Wallet, ethers } from 'ethers'
+import { Signer, Wallet } from 'ethers'
 import { CspAPI } from './api/csp'
 import { IElection, IElectionWithTokenResponse, IElectionDeleted, IElectionAuth } from './api/csp/election'
 import { IUser, IUserUpdate, IUserSearch, IUserDeleted } from './api/csp/user'
@@ -80,10 +80,10 @@ export class VocdoniAdminSDKClient {
       throw new Error('Csp Wallet not set')
     }
 
-    const hashMessage = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(message))
+    // const hashMessage = ethers.utils.keccak256(ethers.utils.toUtf8Bytes(message))
     const auth: IElectionAuth = {
-      signature: await this.wallet.signMessage(hashMessage),
-      data: hashMessage,
+      signature: await this.wallet.signMessage(message),
+      data: message,
     }
 
     return CspAPI.electionAuth(this.cspUrl, electionId, auth)
