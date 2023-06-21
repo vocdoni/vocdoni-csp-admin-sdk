@@ -21,6 +21,18 @@
     },
     "./package.json": "./package.json"
   },
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "engines": {
+    "node": ">=14"
+  },
+  "keywords": [
+    "voting",
+    "blockchain",
+    "vocdoni"
+  ],
   "scripts": {
     "clean": "rimraf node_modules dist",
     "start": "yarn watch",
@@ -34,7 +46,8 @@
     "prepare": "yarn build",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "watch": "yarn build --watch"
+    "watch": "yarn build --watch",
+    "postinstall": "yarn build"
   },
   "husky": {
     "hooks": {
