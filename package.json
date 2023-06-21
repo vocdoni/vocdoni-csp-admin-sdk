@@ -36,7 +36,7 @@
   "scripts": {
     "clean": "rimraf node_modules dist",
     "start": "yarn watch",
-    "build": "rollup -c",
+    "build": "yarn rollup -c",
     "ts-types": "tsc --emitDeclarationOnly --outDir dist",
     "test": "jest test",
     "test:unit": "jest test/unit",
