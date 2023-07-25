@@ -10,7 +10,25 @@ enum CspUserMethods {
   SEARCH = '/elections/{electionId}/users/search',
 }
 
+export interface IUserElection {
+  userId?: string
+  electionId: string
+  consumed: boolean
+}
+
+export interface IUserElectionComplete extends IUserElection {
+  user: IUser
+}
+
 export interface IUser {
+  userId?: string
+  handler: string
+  service: string
+  mode: string
+  data: string
+}
+
+export interface IUserRequest {
   userId?: string
   electionId: string
   handler: string
@@ -53,11 +71,16 @@ export abstract class User extends API {
    * @param {string} url CSP admin endpoint URL
    * @param {string} authToken Token to authenticate the request
    * @param {string} electionId
-   * @param {IUser} data
+   * @param {IUserRequest} data
    *
-   * @returns {Promise<IUser>}
+   * @returns {Promise<IUserElectionComplete>}
    */
-  public static create(url: string, authToken: string, electionId: string, data: IUser): Promise<IUser> {
+  public static create(
+    url: string,
+    authToken: string,
+    electionId: string,
+    data: IUserRequest
+  ): Promise<IUserElectionComplete> {
     return axios
       .post(`${url + CspUserMethods.CREATE.replace('{electionId}', electionId)}`, data, {
         headers: { Authorization: `Bearer ${authToken}` },
@@ -74,9 +97,9 @@ export abstract class User extends API {
    * @param {string} electionId
    * @param {string} id
    *
-   * @returns {Promise<IUser>}
+   * @returns {Promise<IUserElectionComplete>}
    */
-  public static get(url: string, authToken: string, electionId: string, id: string): Promise<IUser> {
+  public static get(url: string, authToken: string, electionId: string, id: string): Promise<IUserElectionComplete> {
     return axios
       .get(`${url + CspUserMethods.GET.replace('{electionId}', electionId).replace('{id}', id)}`, {
         headers: { Authorization: `Bearer ${authToken}` },
@@ -92,9 +115,9 @@ export abstract class User extends API {
    * @param {string} authToken Token to authenticate the request
    * @param {string} electionId
    * @param {string} id
-   * @param {IUser} data
+   * @param {IUserUpdate} data
    *
-   * @returns {Promise<IUser>}
+   * @returns {Promise<IUserElectionComplete>}
    */
   public static update(
     url: string,
@@ -102,7 +125,7 @@ export abstract class User extends API {
     electionId: string,
     id: string,
     data: IUserUpdate
-  ): Promise<IUser> {
+  ): Promise<IUserElectionComplete> {
     return axios
       .put(`${url + CspUserMethods.UPDATE.replace('{electionId}', electionId).replace('{id}', id)}`, data, {
         headers: { Authorization: `Bearer ${authToken}` },
@@ -137,9 +160,9 @@ export abstract class User extends API {
    * @param {string} authToken Token to authenticate the request
    * @param {string} electionId
    *
-   * @returns {Promise<IUser[]>}
+   * @returns {Promise<IUserElectionComplete[]>}
    */
-  public static list(url: string, authToken: string, electionId: string): Promise<IUser[]> {
+  public static list(url: string, authToken: string, electionId: string): Promise<IUserElectionComplete[]> {
     return axios
       .get(`${url + CspUserMethods.LIST.replace('{electionId}', electionId)}`, {
         headers: { Authorization: `Bearer ${authToken}` },
@@ -156,9 +179,14 @@ export abstract class User extends API {
    * @param {string} electionId
    * @param {IUserSearch} query
    *
-   * @returns {Promise<IUser[]>}
+   * @returns {Promise<IUserElectionComplete[]>}
    */
-  public static search(url: string, authToken: string, electionId: string, query: IUserSearch): Promise<IUser[]> {
+  public static search(
+    url: string,
+    authToken: string,
+    electionId: string,
+    query: IUserSearch
+  ): Promise<IUserElectionComplete[]> {
     return axios
       .post(`${url + CspUserMethods.SEARCH.replace('{electionId}', electionId)}`, query, {
         headers: { Authorization: `Bearer ${authToken}` },

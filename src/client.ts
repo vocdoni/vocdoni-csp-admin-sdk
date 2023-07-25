@@ -1,7 +1,7 @@
 import { Signer, Wallet } from 'ethers'
 import { CspAPI } from './api/csp'
 import { IElection, IElectionWithTokenResponse, IElectionDeleted, IElectionAuth } from './api/csp/election'
-import { IUser, IUserUpdate, IUserSearch, IUserDeleted } from './api/csp/user'
+import { IUserUpdate, IUserSearch, IUserDeleted, IUserRequest, IUserElectionComplete } from './api/csp/user'
 
 export * from './api/csp/user'
 export * from './api/csp/election'
@@ -106,7 +106,7 @@ export class VocdoniAdminSDKClient {
   /**
    * Delete the election
    *
-   * @param {string} electionId
+   * @param {string} electionId
    * @returns {Promise<IElectionDeleted>}
    */
   async cspElectionDelete(authToken: string, electionId: string): Promise<IElectionDeleted> {
@@ -135,10 +135,10 @@ export class VocdoniAdminSDKClient {
    *
    * @param {string} authToken Token to authenticate the request
    * @param {string} electionId
-   * @param {IUser} data
-   * @returns {Promise<IUser>}
+   * @param {IUserRequest} data
+   * @returns {Promise<IUserElectionComplete>}
    */
-  async cspUserCreate(authToken: string, electionId: string, data: IUser): Promise<IUser> {
+  async cspUserCreate(authToken: string, electionId: string, data: IUserRequest): Promise<IUserElectionComplete> {
     if (!this.cspUrl) {
       throw new Error('Csp URL not set')
     }
@@ -152,9 +152,9 @@ export class VocdoniAdminSDKClient {
    * @param {string} authToken Token to authenticate the request
    * @param {string} electionId
    * @param {string} id The user id
-   * @returns {Promise<IUser>}
+   * @returns {Promise<IUserElectionComplete>}
    */
-  async cspUserGet(authToken: string, electionId: string, id: string): Promise<IUser> {
+  async cspUserGet(authToken: string, electionId: string, id: string): Promise<IUserElectionComplete> {
     if (!this.cspUrl) {
       throw new Error('Csp URL not set')
     }
@@ -169,9 +169,14 @@ export class VocdoniAdminSDKClient {
    * @param {string} electionId
    * @param {string} id The user id
    * @param {IUserUpdate} data
-   * @returns {Promise<IUser>}
+   * @returns {Promise<IUserElectionComplete>}
    */
-  async cspUserUpdate(authToken: string, electionId: string, id: string, data: IUserUpdate): Promise<IUser> {
+  async cspUserUpdate(
+    authToken: string,
+    electionId: string,
+    id: string,
+    data: IUserUpdate
+  ): Promise<IUserElectionComplete> {
     if (!this.cspUrl) {
       throw new Error('Csp URL not set')
     }
@@ -200,9 +205,9 @@ export class VocdoniAdminSDKClient {
    *
    * @param {string} authToken
    * @param {string} electionId
-   * @returns {Promise<IUser[]>}
+   * @returns {Promise<IUserElectionComplete[]>}
    */
-  async cspUserList(authToken: string, electionId: string): Promise<IUser[]> {
+  async cspUserList(authToken: string, electionId: string): Promise<IUserElectionComplete[]> {
     if (!this.cspUrl) {
       throw new Error('Csp URL not set')
     }
@@ -216,9 +221,9 @@ export class VocdoniAdminSDKClient {
    * @param {string} authToken Token to authenticate the request
    * @param electionId
    * @param {IUserSearch} query The query to filter the users
-   * @returns {Promise<IUser[]>}
+   * @returns {Promise<IUserElectionComplete[]>}
    */
-  async cspUserSearch(authToken: string, electionId: string, query: IUserSearch): Promise<IUser[]> {
+  async cspUserSearch(authToken: string, electionId: string, query: IUserSearch): Promise<IUserElectionComplete[]> {
     if (!this.cspUrl) {
       throw new Error('Csp URL not set')
     }

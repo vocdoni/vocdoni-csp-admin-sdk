@@ -1,5 +1,7 @@
+// import { Wallet, ethers } from 'ethers'
+// import { IElection, IElectionDeleted, IElectionWithTokenResponse } from '../../src/api/csp/election'
 import { Wallet, ethers } from 'ethers'
-import { IUser, IUserDeleted, VocdoniAdminSDKClient } from '../../src/'
+import { IUserDeleted, IUserElectionComplete, IUserRequest, VocdoniAdminSDKClient } from '../../src/'
 import { IElection, IElectionDeleted, IElectionWithTokenResponse } from '../../src/api/csp/election'
 
 const cspUrl = 'http://localhost:5000/v1/auth/elections/admin'
@@ -94,7 +96,7 @@ describe('CSP Admin Tests', () => {
     }
     const created: IElectionWithTokenResponse = await client.cspElectionCreate(election)
 
-    const user: IUser = {
+    const user: IUserRequest = {
       electionId: created.election.electionId,
       handler: 'oauth',
       service: 'facebook',
@@ -102,30 +104,51 @@ describe('CSP Admin Tests', () => {
       data: 'whatever@gmail.com',
       consumed: false,
     }
-    const createdUser: IUser = await client.cspUserCreate(created.adminToken, election.electionId, user)
+    const createdUser: IUserElectionComplete = await client.cspUserCreate(created.adminToken, election.electionId, user)
     const createdUserId: string = createdUser.userId as string
-    const copyUser = { ...createdUser }
+    const user2: IUserElectionComplete = {
+      electionId: user.electionId,
+      user: {
+        handler: user.handler,
+        service: user.service,
+        mode: user.mode,
+        data: user.data,
+      },
+      consumed: user.consumed,
+    }
+
+    const copyUser = JSON.parse(JSON.stringify(createdUser))
     delete copyUser.userId
-    expect(user).toEqual(copyUser)
+    delete copyUser.user.userId
+    expect(user2).toEqual(copyUser)
 
     // Get
-    let fetchedUser: IUser = await client.cspUserGet(created.adminToken, election.electionId, createdUserId)
+    let fetchedUser: IUserElectionComplete = await client.cspUserGet(
+      created.adminToken,
+      election.electionId,
+      createdUserId
+    )
     expect(createdUser).toEqual(fetchedUser)
 
     // List
-    let listed: IUser[] = await client.cspUserList(created.adminToken, election.electionId)
+    let listed: IUserElectionComplete[] = await client.cspUserList(created.adminToken, election.electionId)
     expect(listed).toContainEqual(createdUser)
 
     // Update
-    let updated: IUser = await client.cspUserUpdate(created.adminToken, election.electionId, createdUserId, {
-      consumed: true,
-    })
+    let updated: IUserElectionComplete = await client.cspUserUpdate(
+      created.adminToken,
+      election.electionId,
+      createdUserId,
+      {
+        consumed: true,
+      }
+    )
     fetchedUser = await client.cspUserGet(created.adminToken, election.electionId, createdUserId)
     expect(updated).toEqual(fetchedUser)
     expect(updated.consumed).toEqual(true)
 
     // Search
-    let search: IUser[] = await client.cspUserSearch(created.adminToken, election.electionId, {
+    let search: IUserElectionComplete[] = await client.cspUserSearch(created.adminToken, election.electionId, {
       consumed: true,
     })
     expect(search).toContainEqual(updated)
@@ -152,7 +175,7 @@ describe('CSP Admin Tests', () => {
       ],
     }
     const created: IElectionWithTokenResponse = await client.cspElectionCreate(election)
-    const user: IUser = {
+    const user: IUserRequest = {
       electionId: created.election.electionId,
       handler: 'oauth',
       service: 'facebook',
@@ -169,7 +192,7 @@ describe('CSP Admin Tests', () => {
       await client.cspUserCreate('WrongAdminToken', election.electionId, user)
     }).rejects.toThrow('Authentication failed')
 
-    const createdUser: IUser = await client.cspUserCreate(created.adminToken, election.electionId, user)
+    const createdUser: IUserElectionComplete = await client.cspUserCreate(created.adminToken, election.electionId, user)
 
     await expect(async () => {
       await client.cspUserGet('WrongAdminToken', election.electionId, createdUser.userId as string)
